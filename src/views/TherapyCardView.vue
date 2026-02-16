@@ -220,14 +220,12 @@ const filters = reactive({
 const isSearching = ref(false)
 const errorMessage = ref('')
 // const apiUrl = 'http://localhost:3000/api/citas'
-const apiUrl = 'http://172.16.0.9:8081/api/citas/'
-
-const formatDateForQuery = (value: string) => value.replace(/-/g, '/')
+const apiUrl = 'http://172.16.0.9:8081/api/citas'
 
 const buildQueryString = () => {
   const params = new URLSearchParams({
-    date1: formatDateForQuery(filters.date1),
-    date2: formatDateForQuery(filters.date2),
+    date1: filters.date1,
+    date2: filters.date2,
     prefactura: filters.prefactura.trim(),
   })
 
