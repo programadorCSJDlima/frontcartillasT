@@ -99,3 +99,28 @@ pm2 list
 # Ver logs en vivo
 pm2 logs tarjeta-terapia-front
 ```
+
+
+///////////////////////
+  1. Sube cambios desde local:
+
+  git add .
+  git commit -m "update frontend"
+  git push origin main
+
+  2. En el servidor:
+
+  cd /opt/apps/frontcartillasT
+  git pull --ff-only origin main
+  npm ci
+  npm run build
+  pm2 restart tarjeta-terapia-front
+
+  3. Verifica:
+
+  pm2 status
+  pm2 logs tarjeta-terapia-front --lines 50
+
+  Opcional (1 solo comando):
+
+  /opt/apps/deploy_front.sh
