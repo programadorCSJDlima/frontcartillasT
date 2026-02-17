@@ -68,5 +68,8 @@ export const useCardStore = defineStore('card', {
 
       this.info = nextInfo
     },
+    setField(field: CardField, value: unknown) {
+      this.info[field] = readString(value)
+    },
   },
 })

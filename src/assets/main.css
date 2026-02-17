@@ -21,3 +21,20 @@ body {
   min-height: 100vh;
 }
 
+
+
+
+
+@media print {
+  @page {
+    size: A4; /* Puedes usar 'portrait' o 'landscape' */
+    margin: 0; /* Elimina márgenes físicos del navegador */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    width: 210mm; /* Ancho exacto del A4 para evitar reajustes */
+    height: 297mm;
+  }
+}
