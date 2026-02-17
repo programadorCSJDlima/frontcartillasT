@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 
 // local
-// const diagnosisApiUrl = 'http://localhost:3000/api/diagnosticos'
+//const diagnosisApiUrl = 'http://localhost:3000/api/diagnosticos'
 
 //produccion
 const diagnosisApiUrl = 'http://172.16.0.9:8081/api/diagnosticos'
@@ -106,6 +106,9 @@ const readDiagnosisLabel = (item: DiagnosisApiItem): string => {
     return item.trim()
   }
 
+  const codeCandidates = [item.DIACOD, item.diacod, item.codigo, item.code]
+  const diagnosisCode = codeCandidates.find((candidate) => typeof candidate === 'string' && candidate.trim().length > 0)
+
   const candidates = [
     item.DIADES,
     item.diades,
@@ -119,7 +122,15 @@ const readDiagnosisLabel = (item: DiagnosisApiItem): string => {
 
   for (const candidate of candidates) {
     if (typeof candidate === 'string' && candidate.trim().length > 0) {
-      return candidate.trim()
+      const label = candidate.trim()
+      if (typeof diagnosisCode === 'string') {
+        const code = diagnosisCode.trim()
+        if (code && !label.includes(code)) {
+          return `${label} ${code}`
+        }
+      }
+
+      return label
     }
   }
 

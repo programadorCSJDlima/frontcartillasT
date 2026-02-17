@@ -8,6 +8,7 @@ export const cardFields = [
   'EDAD',
   'HC',
   'DIAGNOSTICO',
+  'DIACOD',
   'PREFACTURA',
   'CITA_PROGRAMADA',
   'HORA_ATENCION',

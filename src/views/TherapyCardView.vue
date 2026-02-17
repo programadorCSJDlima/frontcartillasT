@@ -131,7 +131,7 @@
                 <td v-for="(cell, cellIndex) in row" :key="cellIndex" class="border border-black p-2 align-top">
                   <div v-if="cell" class="flex flex-col gap-1">
                     <span class="text-[10px] font-semibold uppercase tracking-wide">{{ cell.label }}</span>
-                    <span class="text-[11px] font-semibold">{{ cardInfo[cell.key] || '---' }}</span>
+                    <span class="text-[11px] font-semibold">{{ getIdentificationValue(cell) || '---' }}</span>
                   </div>
                   <div v-else class="h-6">&nbsp;</div>
                 </td>
@@ -226,6 +226,20 @@ const servicesStore = useServicesStore()
 const diagnosisStore = useDiagnosisStore()
 
 const cardInfo = computed(() => cardStore.cardInfo)
+const diagnosisDisplay = computed(() => {
+  const diagnosis = cardInfo.value.DIAGNOSTICO?.trim()
+  const code = cardInfo.value.DIACOD?.trim()
+
+  if (diagnosis && code) {
+    if (diagnosis.toLowerCase().includes(code.toLowerCase())) {
+      return diagnosis
+    }
+
+    return `${diagnosis} ${code}`
+  }
+
+  return diagnosis || code || ''
+})
 const diagnosisOptions = computed(() => diagnosisStore.diagnosis)
 const selectedDiagnosis = ref('')
 const selectedDiagnosisOption = ref('')
@@ -235,6 +249,14 @@ const visibleDiagnosisOptions = computed(() => diagnosisOptions.value.slice(0, 2
 const showDiagnosisPanel = computed(() => {
   return selectedDiagnosis.value.trim().length > 0 && !hasSelectedDiagnosisFromList.value
 })
+
+const getIdentificationValue = (cell: IdentificationCell): string => {
+  if (cell.key === 'DIAGNOSTICO') {
+    return diagnosisDisplay.value
+  }
+
+  return cardInfo.value[cell.key] ?? ''
+}
 
 watch(
   selectedDiagnosis,
