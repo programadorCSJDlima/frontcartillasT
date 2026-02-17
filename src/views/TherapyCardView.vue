@@ -314,6 +314,13 @@ const selectedSpecialty = computed({
   get: () => servicesStore.selectedService,
   set: (value: string) => servicesStore.select(value),
 })
+watch(
+  selectedSpecialty,
+  (value) => {
+    cardStore.setField('SERVICIO', value || '')
+  },
+  { immediate: true },
+)
 const filteredSessions = computed(() => {
   const selected = servicesStore.selectedService
   const sessions = sessionsStore.sessions
