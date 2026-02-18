@@ -3,10 +3,10 @@ import { defineStore } from 'pinia'
 
 
 // local
-//const diagnosisApiUrl = 'http://localhost:3000/api/diagnosticos'
+const diagnosisApiUrl = 'http://localhost:3000/api/diagnosticos'
 
 //produccion
-const diagnosisApiUrl = 'http://172.16.0.9:8081/api/diagnosticos'
+//const diagnosisApiUrl = 'http://172.16.0.9:8081/api/diagnosticos'
 
 type DiagnosisApiItem = Record<string, unknown> | string
 

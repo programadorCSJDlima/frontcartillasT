@@ -375,10 +375,10 @@ const isSearching = ref(false)
 const errorMessage = ref('')
 
 // local
-//const apiUrl = 'http://localhost:3000/api/citas'
+const apiUrl = 'http://localhost:3000/api/citas'
 
 //produccion
-const apiUrl = 'http://172.16.0.9:8081/api/citas'
+//const apiUrl = 'http://172.16.0.9:8081/api/citas'
 
 const buildQueryString = () => {
   const params = new URLSearchParams({
@@ -418,13 +418,13 @@ const handleSearch = async () => {
       return
     }
 
-    const [first, ...rest] = records
+    const [first] = records
     cardStore.setFromAppointment(first)
     if (selectedDiagnosis.value) {
       cardStore.setField('DIAGNOSTICO', selectedDiagnosis.value)
     }
-    sessionsStore.setFromAppointments(rest)
-    servicesStore.setOptionsFromRecords(rest)
+    sessionsStore.setFromAppointments(records)
+    servicesStore.setOptionsFromRecords(records)
   } catch (err) {
     errorMessage.value =
       err instanceof Error ? err.message : 'Ocurrió un error inesperado al consultar las citas.'
