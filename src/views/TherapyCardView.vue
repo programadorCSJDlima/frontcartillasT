@@ -104,7 +104,13 @@
         </p>
       </aside>
 
-      <div class="print-card mx-auto w-full max-w-4xl border-2 border-black bg-white p-6 text-[12px] text-slate-900 shadow-2xl">
+      <div class="print-cards flex w-full flex-col gap-6">
+        <div
+          v-for="(pageSessions, pageIndex) in pagedSessions"
+          :key="pageIndex"
+          class="print-card mx-auto w-full max-w-4xl border-2 border-black bg-white p-6 text-[12px] text-slate-900 shadow-2xl"
+          :class="{ 'page-break': pageIndex > 0, 'mt-8': pageIndex > 0 }"
+        >
         
         <header class="flex w-full items-center justify-between gap-4 border-b-2 border-black pb-4 text-center uppercase">
           <div class="flex items-center justify-center md:justify-start">
@@ -144,7 +150,7 @@
           <table class="w-full border-collapse text-[10px]">
             <thead>
               <tr class="bg-slate-200 text-center font-semibold">
-                <th class="w-[6%] border border-black p-2">SESION</th>
+                <th class="w-[6%] border border-black p-2">SESIÓN</th>
                 <th class="w-[10%] border border-black p-2">PREFACTURA</th>
                 <th class="w-[25%] border border-black p-2">PACIENTE</th>
                 <th class="w-[12%] border border-black p-2">FECHA</th>
@@ -154,18 +160,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-if="numberedSessions.length === 0">
+              <tr v-if="pageSessions.length === 0 && pageIndex === 0">
                 <td colspan="7" class="border border-black p-4 text-center text-xs italic text-slate-500">
                   No hay sesiones para mostrar. Utiliza la búsqueda para cargar información.
                 </td>
               </tr>
-              <tr v-for="item in numberedSessions" :key="item.session.id" class="text-center text-[10px]">
+              <tr v-for="item in pageSessions" :key="item.session.id" class="text-center text-[10px]">
                 <td class="border border-black p-2">{{ item.sessionNumber }}</td>
                 <td class="border border-black p-2">{{ item.session.PREFACTURA }}</td>
-                <td class="border border-black p-2 text-left whitespace-nowrap">{{ item.session.PACIENTE }}</td>
+                <td class="border border-black text-[8px] p-2 text-left whitespace-nowrap">{{ item.session.PACIENTE }}</td>
                 <td class="border border-black p-2">{{ item.session.CITA_PROGRAMADA }}</td>
                 <td class="border border-black p-2">{{ item.session.HORA_ATENCION }}</td>
-                <td class="border border-black p-2 text-left whitespace-nowrap">{{ item.session.TERAPISTA || 'Profesional no asignado' }}</td>
+                <td class="border border-black text-[8px] p-2 text-left whitespace-nowrap">{{ item.session.TERAPISTA || 'Profesional no asignado' }}</td>
                 <td class="border border-black p-2">
                   <label class="inline-flex items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-wide">
                     <input
@@ -181,10 +187,11 @@
           </table>
         </section>
 
-        <footer class="mt-24 flex items-end justify-between gap-6">
-          <div class="w-44 border-t border-black pt-2 text-center font-semibold">HUELLA DIGITAL</div>
-          <div class="w-48 border-t border-black pt-2 text-center font-semibold">FIRMA</div>
-        </footer>
+          <footer class="mt-24 flex items-end justify-between gap-6">
+            <div class="w-44 border-t border-black pt-2 text-center font-semibold">HUELLA DIGITAL</div>
+            <div class="w-48 border-t border-black pt-2 text-center font-semibold">FIRMA</div>
+          </footer>
+        </div>
       </div>
     </div>
   </div>
@@ -365,6 +372,21 @@ const numberedSessions = computed(() => {
     }))
 })
 
+const pagedSessions = computed(() => {
+  const pageSize = 15
+  const sessions = numberedSessions.value
+  if (sessions.length === 0) {
+    return [[]]
+  }
+
+  const pages: Array<typeof sessions> = []
+  for (let i = 0; i < sessions.length; i += pageSize) {
+    pages.push(sessions.slice(i, i + pageSize))
+  }
+
+  return pages
+})
+
 const filters = reactive({
   date1: '2026-01-01',
   date2: '2026-01-09',
@@ -375,10 +397,10 @@ const isSearching = ref(false)
 const errorMessage = ref('')
 
 // local
-const apiUrl = 'http://localhost:3000/api/citas'
+//const apiUrl = 'http://localhost:3000/api/citas'
 
 //produccion
-//const apiUrl = 'http://172.16.0.9:8081/api/citas'
+const apiUrl = 'http://172.16.0.9:8081/api/citas'
 
 const buildQueryString = () => {
   const params = new URLSearchParams({
@@ -464,11 +486,18 @@ const printCard = () => {
     display: none !important;
   }
 
+  * {
+    /* background: transparent !important; */
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
   .print-card {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
     box-shadow: none !important;
+    /* padding: 12px !important; */
   }
 
   .print-card header {
@@ -497,6 +526,12 @@ const printCard = () => {
   .sessions-table td:last-child,
   .sessions-table th:last-child {
     text-align: center !important;
+  }
+
+  .page-break {
+    break-before: page !important;
+    page-break-before: always !important;
+    margin-top: 24px !important;
   }
 }
 </style>
