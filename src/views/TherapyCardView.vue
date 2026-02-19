@@ -146,11 +146,11 @@
               <tr class="bg-slate-200 text-center font-semibold">
                 <th class="w-[6%] border border-black p-2">SESION</th>
                 <th class="w-[10%] border border-black p-2">PREFACTURA</th>
-                <th class="w-[31%] border border-black p-2">PACIENTE</th>
+                <th class="w-[25%] border border-black p-2">PACIENTE</th>
                 <th class="w-[12%] border border-black p-2">FECHA</th>
                 <th class="w-[9%] border border-black p-2">HORA</th>
-                <th class="w-[22%] border border-black p-2">TERAPISTA</th>
-                <th class="w-[10%] border border-black p-2">ESTADO</th>
+                <th class="w-[24%] border border-black p-2">TERAPISTA</th>
+                <th class="w-[14%] border border-black p-2">ESTADO</th>
               </tr>
             </thead>
             <tbody>
@@ -482,6 +482,21 @@ const printCard = () => {
 
   .print-card header > div:last-child {
     width: 100% !important;
+  }
+
+  .sessions-table table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .sessions-table th,
+  .sessions-table td {
+    overflow: hidden;
+  }
+
+  .sessions-table td:last-child,
+  .sessions-table th:last-child {
+    text-align: center !important;
   }
 }
 </style>
